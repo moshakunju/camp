@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Camp 2026 Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body { font-family: Arial, sans-serif; background: #f4f6f8; margin:0; padding:20px; display:flex; justify-content:center; }
+.form-container { max-width: 500px; width:100%; background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+h2 { text-align:center; margin-bottom:20px; }
+label { display:block; margin-top:12px; font-weight: bold; color:#444; }
+input, select, button { width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; font-size:15px; }
+button { background:#28a745; color:white; border:none; font-size:16px; margin-top:20px; cursor:pointer; transition:background .3s; }
+button:hover { background:#218838; }
+#qrContainer { text-align:center; margin-top:20px; border:1px solid #ccc; padding:10px; border-radius:12px; display:inline-block; }
+#qrContainer canvas { display:block; margin:auto; }
+#qrContainer .label { margin-top:10px; font-weight:bold; font-size:16px; }
+</style>
+</head>
+<body>
+<div class="form-container">
+<h2>Camp 2026 Registration</h2>
+
+<form id="regForm">
+<label>Name:</label>
+<input type="text" id="name" required>
+
+<label>Age:</label>
+<input type="number" id="age" min="1" required>
+
+<label>Sex:</label>
+<select id="sex" required>
+  <option value="">Select</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+  <option value="Other">Other</option>
+</select>
+
+<label>Accommodation Needed:</label>
+<select id="accommodation" required>
+  <option value="">Select</option>
+  <option value="Yes">Yes</option>
+  <option value="No">No</option>
+</select>
+
+<label>Contact Number:</label>
+<input type="text" id="contact" required>
+
+<label>Church/Assembly Name:</label>
+<input type="text" id="churchInput" list="churches" placeholder="Start typing your church" required>
+<datalist id="churches">
+<option value="ABC NEDUMBASSERY">
+<option value="ALUVA">
+<option value="ARAKAPADY">
+<option value="THENGODE">
+<option value="VATTAPARA">
+<option value="ERNAKULAM SOUTH">
+<option value="THUTHIYOOR">
+<option value="KAKKOOR">
+<option value="KALAMASSERY">
+<option value="KARUMALOOR">
+<option value="KOTHAMANGALAM TOWN">
+<option value="KOTHAMANGALAM THANKALAM">
+<option value="KOTTAPADY">
+<option value="MANNOOR">
+<option value="MUVATTUPUZHA">
+<option value="PAINGOTOOR">
+<option value="PIRAVOM">
+<option value="VAPPALASSERY">
+<option value="PRALAYAKKADU">
+<option value="ANGAMALY WEST">
+<option value="ERUMALAPADY">
+<option value="PANAMKUZHY">
+<option value="UDAYAMPEROOR">
+<option value="EDAYAKUNNAM">
+<option value="CARMEL PALARIVATTOM">
+<option value="CHELLANAM">
+<option value="VAKKAD">
+<option value="THIRUVANKULAM">
+<option value="VAZHAKKULAM">
+<option value="CBC PALARIVATTOM">
+<option value="ARAKUZHA">
+<option value="KAYANAD">
+<option value="KIDANGOOR">
+<option value="KIZHAKKAMBALAM">
+<option value="KODANAD">
+<option value="KOOTHATTUKULAM">
+<option value="KRARIYELY">
+<option value="KURUPAMPADY">
+<option value="MANEED">
+<option value="MOOKKANNOOR">
+<option value="MULANTHURUTHY">
+<option value="MULLARINGAD">
+<option value="OORAMANA">
+<option value="PAMBAKUDA">
+<option value="PERUMBAVOOR">
+<option value="POTHANICAD">
+<option value="THEVARA">
+<option value="UPPUKUNNU">
+<option value="VALAKOM">
+<option value="ANGAMALY EAST">
+<option value="COCHIN BIBLE CHAPEL PALARIVATTOM">
+<option value="MANJAPRA">
+<option value="TRIPUNITHURA">
+<option value="ARAKKUNNAM">
+<option value="AVOLICHAL">
+<option value="KUNNACKAL">
+<option value="KUNNAKURUDY">
+<option value="KURUMBATHURUTH">
+<option value="EDAPALLY">
+<option value="ELAVOOR">
+<option value="ANGAMALY EMMANUEL">
+<option value="ERNAKULAM CHRISTIAN BRETHREN ASSEMBLY (ECBA)">
+<option value="FORT KOCHI">
+<option value="ERNAKULAM NORTH">
+<option value="IRINGOLE">
+<option value="KADAMATTOM">
+<option value="KADATHY">
+<option value="KAKKANAD">
+<option value="KALADY">
+<option value="KARIMANNOOR">
+<option value="KARUKUTTY">
+<option value="KEERAMPARA KOTHAMANGALAM">
+<option value="KOCHI EBENEZER PANDIKUDY">
+<option value="KOCHI SAUDI">
+<option value="KOLENCHERY">
+<option value="KOMBANAD">
+<option value="KUNNAM THODUPUZHA">
+<option value="MAMALA">
+<option value="MAMMALASSERY">
+<option value="MARIKA">
+<option value="MEENPARA">
+<option value="MUNAMBAM">
+<option value="MUNDANMALA">
+<option value="MUVATTUPUZHA TOWN">
+<option value="NADUKANI">
+<option value="NAYARAMBALAM">
+<option value="NEDUNGAPRA">
+<option value="ODAKKALY">
+<option value="PALAKUZHA">
+<option value="PANAMBUKAD">
+<option value="NORTH PARAVOOR">
+<option value="PUNNEKADU">
+<option value="PUTHENCRUZ">
+<option value="RAMAMANGALAM">
+<option value="MARANGATTUPALLY">
+<option value="THALAKODE">
+<option value="VYTTILA">
+<option value="THE MOOKKANNUR AZHAKAM">
+<option value="THURAVOOR">
+<option value="ANGAMALY TOWN">
+<option value="UZHAVOOR">
+<option value="VADUTHALA">
+<option value="VENGOOR">
+<option value="VYPIN">
+</datalist>
+
+<button type="submit" id="submitBtn">Submit</button>
+</form>
+
+<div id="qrContainer" style="display:none;">
+  <canvas id="qrCanvas"></canvas>
+  <div class="label" id="qrLabel"></div>
+</div>
+<button id="downloadBtn" style="display:none;">Download QR</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqR1FoRQL3K_59LBkwOcpgr-jAmAmDonSNfpROKDyA8i-EmnvOwO3od3f0ZX4p3za2DQ/exec";
+const form = document.getElementById('regForm');
+const submitBtn = document.getElementById("submitBtn");
+const qrContainer = document.getElementById("qrContainer");
+const qrCanvas = document.getElementById("qrCanvas");
+const qrLabel = document.getElementById("qrLabel");
+const downloadBtn = document.getElementById("downloadBtn");
+
+function generateID(length=8){
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let id = '';
+  for(let i=0;i<length;i++) id += chars.charAt(Math.floor(Math.random()*chars.length));
+  return id;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const sex = document.getElementById("sex").value;
+  const accommodation = document.getElementById("accommodation").value;
+  const contact = document.getElementById("contact").value.trim();
+  const church = document.getElementById("churchInput").value.trim();
+
+  if(!name || !age || !sex || !accommodation || !contact || !church){
+    alert("Please fill all fields.");
+    return;
+  }
+
+  const uniqueID = generateID();
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({name, age, sex, accommodation, contact, church, id: uniqueID})
+    });
+
+    submitBtn.textContent = "Submitted!";
+    form.reset();
+
+    qrContainer.style.display = "block";
+    const qr = new QRious({
+      element: qrCanvas,
+      value: uniqueID,
+      size: 200
+    });
+    qrLabel.textContent = `Name: ${name} | Age: ${age}`;
+    downloadBtn.style.display = "block";
+
+    downloadBtn.onclick = () => {
+      const link = document.createElement('a');
+      link.href = qrCanvas.toDataURL();
+      link.download = `${name}_${age}_QR.png`;
+      link.click();
+    }
+
+  } catch(err){
+    alert("❌ Error: "+err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit";
+  }
+});
+</script>
+</div>
+</body>
+</html>
