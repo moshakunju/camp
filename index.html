@@ -166,12 +166,14 @@ const form = document.getElementById('regForm');
 const submitBtn = document.getElementById("submitBtn");
 const qrDiv = document.getElementById("qr");
 
+let nameGlobal="", ageGlobal="", idGlobal="";
+
 function generateID(name, age){
   return btoa(name + age + Date.now()).substr(0,12);
 }
 
-// JSONP callback function
-function handleResponse(data){
+// JSONP callback function must be global
+window.handleResponse = function(data){
   if(data.status==="duplicate"){
     alert("❌ This attendee is already registered.");
     submitBtn.disabled = false;
@@ -188,8 +190,6 @@ function handleResponse(data){
   submitBtn.disabled = false;
   submitBtn.textContent = "Submit";
 }
-
-let nameGlobal="", ageGlobal="", idGlobal="";
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
