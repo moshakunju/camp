@@ -6,21 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body { font-family: Arial, sans-serif; background: #f4f6f8; margin:0; padding:20px; display:flex; justify-content:center; }
-.form-container { max-width: 500px; width:100%; background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+.form-container { max-width: 480px; width:100%; background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
 h2 { text-align:center; margin-bottom:20px; }
 label { display:block; margin-top:12px; font-weight: bold; color:#444; }
 input, select, button { width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; font-size:15px; }
 button { background:#28a745; color:white; border:none; font-size:16px; margin-top:20px; cursor:pointer; transition:background .3s; }
 button:hover { background:#218838; }
-#qrContainer { text-align:center; margin-top:20px; border:1px solid #ccc; padding:10px; border-radius:12px; display:inline-block; }
-#qrContainer canvas { display:block; margin:auto; }
-#qrContainer .label { margin-top:10px; font-weight:bold; font-size:16px; }
+button:disabled { background:#aaa; cursor: not-allowed; }
+#qr { margin-top:20px; text-align:center; }
 </style>
 </head>
 <body>
 <div class="form-container">
 <h2>Camp 2026 Registration</h2>
-
 <form id="regForm">
 <label>Name:</label>
 <input type="text" id="name" required>
@@ -30,17 +28,16 @@ button:hover { background:#218838; }
 
 <label>Sex:</label>
 <select id="sex" required>
-  <option value="">Select</option>
-  <option value="Male">Male</option>
-  <option value="Female">Female</option>
-  <option value="Other">Other</option>
+<option value="">Select</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
 </select>
 
-<label>Accommodation Needed:</label>
+<label>Accommodation:</label>
 <select id="accommodation" required>
-  <option value="">Select</option>
-  <option value="Yes">Yes</option>
-  <option value="No">No</option>
+<option value="">Select</option>
+<option value="Yes">Yes</option>
+<option value="No">No</option>
 </select>
 
 <label>Contact Number:</label>
@@ -158,82 +155,68 @@ button:hover { background:#218838; }
 <button type="submit" id="submitBtn">Submit</button>
 </form>
 
-<div id="qrContainer" style="display:none;">
-  <canvas id="qrCanvas"></canvas>
-  <div class="label" id="qrLabel"></div>
+<div id="qr"></div>
 </div>
-<button id="downloadBtn" style="display:none;">Download QR</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqR1FoRQL3K_59LBkwOcpgr-jAmAmDonSNfpROKDyA8i-EmnvOwO3od3f0ZX4p3za2DQ/exec";
+
 const form = document.getElementById('regForm');
 const submitBtn = document.getElementById("submitBtn");
-const qrContainer = document.getElementById("qrContainer");
-const qrCanvas = document.getElementById("qrCanvas");
-const qrLabel = document.getElementById("qrLabel");
-const downloadBtn = document.getElementById("downloadBtn");
+const qrDiv = document.getElementById("qr");
 
-function generateID(length=8){
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let id = '';
-  for(let i=0;i<length;i++) id += chars.charAt(Math.floor(Math.random()*chars.length));
-  return id;
+function generateID(name, age){
+  return btoa(name + age + Date.now()).substr(0,12);
 }
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const name = document.getElementById("name").value.trim();
-  const age = document.getElementById("age").value.trim();
+  const age = parseInt(document.getElementById("age").value.trim(),10);
   const sex = document.getElementById("sex").value;
   const accommodation = document.getElementById("accommodation").value;
   const contact = document.getElementById("contact").value.trim();
   const church = document.getElementById("churchInput").value.trim();
 
   if(!name || !age || !sex || !accommodation || !contact || !church){
-    alert("Please fill all fields.");
+    alert("Please fill all fields");
     return;
   }
-
-  const uniqueID = generateID();
 
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
+  const id = generateID(name, age);
+
+  const url = `${SCRIPT_URL}?name=${encodeURIComponent(name)}&age=${age}&sex=${encodeURIComponent(sex)}&accommodation=${encodeURIComponent(accommodation)}&contact=${encodeURIComponent(contact)}&church=${encodeURIComponent(church)}&id=${encodeURIComponent(id)}`;
+
   try {
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({name, age, sex, accommodation, contact, church, id: uniqueID})
-    });
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if(data.status === "duplicate"){
+      alert("❌ This attendee is already registered.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit";
+      return;
+    }
 
     submitBtn.textContent = "Submitted!";
     form.reset();
 
-    qrContainer.style.display = "block";
-    const qr = new QRious({
-      element: qrCanvas,
-      value: uniqueID,
-      size: 200
-    });
-    qrLabel.textContent = `Name: ${name} | Age: ${age}`;
-    downloadBtn.style.display = "block";
+    qrDiv.innerHTML = `<h3>Your QR Code:</h3><canvas id="qrCanvas"></canvas><p>Name: ${name}<br>Age: ${age}</p>`;
+    new QRious({ element: document.getElementById('qrCanvas'), value: id, size: 200 });
 
-    downloadBtn.onclick = () => {
-      const link = document.createElement('a');
-      link.href = qrCanvas.toDataURL();
-      link.download = `${name}_${age}_QR.png`;
-      link.click();
-    }
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit";
 
   } catch(err){
-    alert("❌ Error: "+err.message);
-  } finally {
+    alert("❌ Submission failed: " + err.message);
     submitBtn.disabled = false;
     submitBtn.textContent = "Submit";
   }
 });
 </script>
-</div>
 </body>
 </html>
